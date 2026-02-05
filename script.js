@@ -1,31 +1,112 @@
-// Language Switching Functionality
+// Multi-Language System with Auto-Detection
 document.addEventListener('DOMContentLoaded', () => {
-    const langButtons = document.querySelectorAll('.lang-btn');
-    let currentLang = 'en';
+    // Supported languages with metadata
+    const LANGUAGES = {
+        en: { name: 'English', flag: '🇬🇧', dir: 'ltr' },
+        ru: { name: 'Русский', flag: '🇷🇺', dir: 'ltr' },
+        ar: { name: 'العربية', flag: '🇸🇦', dir: 'rtl' },
+        zh: { name: '中文', flag: '🇨🇳', dir: 'ltr' }
+    };
 
-    // Language switching
-    langButtons.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const lang = btn.dataset.lang;
+    // Detect browser language and get initial language
+    function detectLanguage() {
+        // Check URL parameter first
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlLang = urlParams.get('lang');
+        if (urlLang && LANGUAGES[urlLang]) return urlLang;
+
+        // Check localStorage
+        const savedLang = localStorage.getItem('edgefocus-lang');
+        if (savedLang && LANGUAGES[savedLang]) return savedLang;
+
+        // Detect from browser
+        const browserLang = navigator.language || navigator.userLanguage;
+        const langCode = browserLang.split('-')[0].toLowerCase();
+
+        // Map browser language to supported languages
+        if (langCode === 'ru' || langCode === 'uk' || langCode === 'be') return 'ru';
+        if (langCode === 'ar') return 'ar';
+        if (langCode === 'zh') return 'zh';
+        return 'en';
+    }
+
+    let currentLang = detectLanguage();
+
+    // Initialize language dropdown
+    function initLanguageDropdown() {
+        const langSwitcher = document.querySelector('.lang-switcher');
+        if (!langSwitcher) return;
+
+        // Create dropdown HTML
+        langSwitcher.innerHTML = `
+            <button class="lang-dropdown-btn" aria-label="Select language" aria-expanded="false">
+                <span class="current-lang-flag">${LANGUAGES[currentLang].flag}</span>
+                <span class="current-lang-code">${currentLang.toUpperCase()}</span>
+                <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <div class="lang-dropdown-menu" role="menu">
+                ${Object.entries(LANGUAGES).map(([code, lang]) => `
+                    <button class="lang-option ${code === currentLang ? 'active' : ''}" data-lang="${code}" role="menuitem">
+                        <span class="lang-flag">${lang.flag}</span>
+                        <span class="lang-name">${lang.name}</span>
+                        <span class="lang-code">${code.toUpperCase()}</span>
+                    </button>
+                `).join('')}
+            </div>
+        `;
+
+        // Dropdown toggle
+        const dropdownBtn = langSwitcher.querySelector('.lang-dropdown-btn');
+        const dropdownMenu = langSwitcher.querySelector('.lang-dropdown-menu');
+
+        dropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = langSwitcher.classList.toggle('open');
+            dropdownBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        // Close on outside click
+        document.addEventListener('click', () => {
+            langSwitcher.classList.remove('open');
+            dropdownBtn.setAttribute('aria-expanded', 'false');
+        });
+
+        // Language selection
+        dropdownMenu.addEventListener('click', (e) => {
+            const option = e.target.closest('.lang-option');
+            if (!option) return;
+
+            const lang = option.dataset.lang;
             if (lang === currentLang) return;
 
-            // Update button states
-            langButtons.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentLang = lang;
+            // Update UI
+            langSwitcher.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
 
-            // Update all translatable elements
+            // Update current language display
+            langSwitcher.querySelector('.current-lang-flag').textContent = LANGUAGES[lang].flag;
+            langSwitcher.querySelector('.current-lang-code').textContent = lang.toUpperCase();
+
+            // Close dropdown
+            langSwitcher.classList.remove('open');
+            dropdownBtn.setAttribute('aria-expanded', 'false');
+
+            // Update page
+            currentLang = lang;
+            localStorage.setItem('edgefocus-lang', lang);
             updateLanguage(lang);
         });
-    });
+    }
 
     function updateLanguage(lang) {
-        const elements = document.querySelectorAll('[data-en][data-ru]');
-        
+        // Update all translatable elements
+        const elements = document.querySelectorAll('[data-en]');
+
         elements.forEach(el => {
-            const text = el.dataset[lang];
+            const text = el.dataset[lang] || el.dataset.en; // Fallback to English
             if (text) {
-                // Animate the transition
                 el.style.opacity = '0';
                 setTimeout(() => {
                     el.textContent = text;
@@ -34,9 +115,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Update HTML lang attribute
-        document.documentElement.lang = lang === 'en' ? 'en' : 'ru';
+        // Update HTML attributes
+        document.documentElement.lang = lang;
+        document.documentElement.dir = LANGUAGES[lang].dir;
+
+        // Update canonical URL
+        const canonical = document.querySelector('link[rel="canonical"]');
+        if (canonical) {
+            const baseUrl = 'https://landing.edgefocus.ru';
+            canonical.href = lang === 'en' ? baseUrl : `${baseUrl}?lang=${lang}`;
+        }
+
+        // Apply RTL-specific styles for Arabic
+        document.body.classList.toggle('rtl', lang === 'ar');
     }
+
+    // Initialize
+    initLanguageDropdown();
+    updateLanguage(currentLang);
 
     // Intersection Observer for scroll animations
     const observerOptions = {
@@ -77,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
             if (target) {
@@ -95,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.addEventListener('scroll', () => {
         const currentScroll = window.pageYOffset;
-        
+
         if (currentScroll > 100) {
             navbar.style.background = 'rgba(11, 15, 26, 0.95)';
             navbar.style.borderBottom = '1px solid rgba(102, 126, 234, 0.2)';
@@ -103,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.style.background = 'rgba(11, 15, 26, 0.8)';
             navbar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.08)';
         }
-        
+
         lastScroll = currentScroll;
     });
 
@@ -127,10 +223,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const animateStats = () => {
         if (statsAnimated) return;
-        
+
         const statsSection = document.querySelector('.hero-stats');
+        if (!statsSection) return;
         const rect = statsSection.getBoundingClientRect();
-        
+
         if (rect.top < window.innerHeight && rect.bottom > 0) {
             statsAnimated = true;
             statValues.forEach(stat => {
@@ -145,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add loading transition
     document.body.style.opacity = '0';
     document.body.style.transition = 'opacity 0.5s ease';
-    
+
     window.addEventListener('load', () => {
         document.body.style.opacity = '1';
     });
@@ -153,5 +250,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Console easter egg
     console.log('%c⚡ EdgeFocus', 'font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #667eea, #764ba2, #ed64a6); -webkit-background-clip: text; color: transparent;');
     console.log('%cYour Edge in Productivity', 'font-size: 14px; color: #667eea;');
-    console.log('%cInterested in investing? Contact: investor@edgefocus.ru', 'font-size: 12px; color: #a0aec0;');
+    console.log('%cTelegram: @TimothyIvaikin', 'font-size: 12px; color: #a0aec0;');
 });

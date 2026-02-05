@@ -1261,3 +1261,198 @@ body {
         padding: 30px 20px;
     }
 }
+
+/* === LANGUAGE DROPDOWN === */
+.lang-switcher {
+    position: relative;
+    display: flex;
+    gap: 0;
+    background: transparent;
+    padding: 0;
+}
+
+.lang-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--dark-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lang-dropdown-btn:hover {
+    background: var(--dark-lighter);
+    border-color: var(--primary);
+}
+
+.current-lang-flag {
+    font-size: 18px;
+}
+
+.dropdown-arrow {
+    transition: transform 0.3s ease;
+}
+
+.lang-switcher.open .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.lang-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 180px;
+    background: var(--dark-light);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+.lang-switcher.open .lang-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.lang-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.lang-option:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: var(--text);
+}
+
+.lang-option.active {
+    background: rgba(102, 126, 234, 0.2);
+    color: var(--text);
+}
+
+.lang-option:first-child {
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+
+.lang-option:last-child {
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+}
+
+.lang-flag {
+    font-size: 20px;
+}
+
+.lang-name {
+    flex: 1;
+}
+
+.lang-code {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 600;
+}
+
+/* === RTL SUPPORT === */
+html[dir="rtl"] {
+    direction: rtl;
+}
+
+html[dir="rtl"] body {
+    text-align: right;
+}
+
+html[dir="rtl"] .nav-container,
+html[dir="rtl"] .hero-stats,
+html[dir="rtl"] .hero-cta,
+html[dir="rtl"] .founder-highlights,
+html[dir="rtl"] .footer-content,
+html[dir="rtl"] .footer-links {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .btn {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .btn svg {
+    transform: scaleX(-1);
+}
+
+html[dir="rtl"] .mock-sidebar {
+    border-right: none;
+    border-left: 1px solid var(--border);
+}
+
+html[dir="rtl"] .mock-task {
+    border-left: none;
+    border-right: 3px solid var(--text-dim);
+}
+
+html[dir="rtl"] .mock-task.secondary {
+    border-right-color: #ffbd2e;
+}
+
+html[dir="rtl"] .lang-dropdown-menu {
+    right: auto;
+    left: 0;
+}
+
+html[dir="rtl"] .vision-year {
+    margin-right: 0;
+    margin-left: 24px;
+}
+
+/* Telegram button style */
+.btn-telegram {
+    background: linear-gradient(135deg, #0088cc, #00a9e0);
+    color: white;
+    box-shadow: 0 4px 20px rgba(0, 136, 204, 0.4);
+}
+
+.btn-telegram:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0, 136, 204, 0.5);
+}
+
+/* Mobile dropdown improvements */
+@media (max-width: 768px) {
+    .lang-dropdown-btn {
+        padding: 8px 12px;
+    }
+
+    .current-lang-code {
+        display: none;
+    }
+
+    .lang-dropdown-menu {
+        right: 0;
+        min-width: 160px;
+    }
+
+    html[dir="rtl"] .lang-dropdown-menu {
+        right: 0;
+        left: auto;
+    }
+}
