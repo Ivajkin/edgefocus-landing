@@ -363,6 +363,11 @@ body {
     font-size: 14px;
 }
 
+.code-download {
+    color: var(--primary-light);
+    border: 1px solid var(--primary);
+}
+
 /* === SECTIONS === */
 .section {
     padding: 100px 0;
@@ -626,7 +631,6 @@ body {
 }
 
 .mock-task.secondary {
-    opacity: 0.7;
     border-left-color: #ffbd2e;
 }
 
@@ -815,7 +819,7 @@ body {
     flex-shrink: 0;
 }
 
-.skill-feature h4 {
+.skill-feature h3 {
     font-size: 16px;
     font-weight: 700;
     margin-bottom: 4px;
@@ -979,7 +983,7 @@ body {
     margin-bottom: 16px;
 }
 
-.tech-card h4 {
+.tech-card h3 {
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 8px;
