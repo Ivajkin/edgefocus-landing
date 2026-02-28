@@ -59,6 +59,7 @@ body {
     border-radius: 50%;
     filter: blur(100px);
     opacity: 0.4;
+    will-change: transform;
     animation: float 20s ease-in-out infinite;
 }
 
@@ -1189,6 +1190,11 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+.animate-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
 }
 
 /* === RESPONSIVE === */

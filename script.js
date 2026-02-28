@@ -10,20 +10,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Detect browser language and get initial language
     function detectLanguage() {
-        // Check URL parameter first
         const urlParams = new URLSearchParams(window.location.search);
         const urlLang = urlParams.get('lang');
         if (urlLang && LANGUAGES[urlLang]) return urlLang;
 
-        // Check localStorage
         const savedLang = localStorage.getItem('edgefocus-lang');
         if (savedLang && LANGUAGES[savedLang]) return savedLang;
 
-        // Detect from browser
         const browserLang = navigator.language || navigator.userLanguage;
         const langCode = browserLang.split('-')[0].toLowerCase();
 
-        // Map browser language to supported languages
         if (langCode === 'ru' || langCode === 'uk' || langCode === 'be') return 'ru';
         if (langCode === 'ar') return 'ar';
         if (langCode === 'zh') return 'zh';
@@ -37,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const langSwitcher = document.querySelector('.lang-switcher');
         if (!langSwitcher) return;
 
-        // Create dropdown HTML
         langSwitcher.innerHTML = `
             <button class="lang-dropdown-btn" aria-label="Select language" aria-expanded="false">
                 <span class="current-lang-flag">${LANGUAGES[currentLang].flag}</span>
@@ -57,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Dropdown toggle
         const dropdownBtn = langSwitcher.querySelector('.lang-dropdown-btn');
         const dropdownMenu = langSwitcher.querySelector('.lang-dropdown-menu');
 
@@ -67,13 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
             dropdownBtn.setAttribute('aria-expanded', isOpen);
         });
 
-        // Close on outside click
         document.addEventListener('click', () => {
             langSwitcher.classList.remove('open');
             dropdownBtn.setAttribute('aria-expanded', 'false');
         });
 
-        // Language selection
         dropdownMenu.addEventListener('click', (e) => {
             const option = e.target.closest('.lang-option');
             if (!option) return;
@@ -81,19 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const lang = option.dataset.lang;
             if (lang === currentLang) return;
 
-            // Update UI
             langSwitcher.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
             option.classList.add('active');
-
-            // Update current language display
             langSwitcher.querySelector('.current-lang-flag').textContent = LANGUAGES[lang].flag;
             langSwitcher.querySelector('.current-lang-code').textContent = lang.toUpperCase();
-
-            // Close dropdown
             langSwitcher.classList.remove('open');
             dropdownBtn.setAttribute('aria-expanded', 'false');
 
-            // Update page
             currentLang = lang;
             localStorage.setItem('edgefocus-lang', lang);
             updateLanguage(lang);
@@ -101,11 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateLanguage(lang) {
-        // Update all translatable elements
         const elements = document.querySelectorAll('[data-en]');
-
         elements.forEach(el => {
-            const text = el.dataset[lang] || el.dataset.en; // Fallback to English
+            const text = el.dataset[lang] || el.dataset.en;
             if (text) {
                 el.style.opacity = '0';
                 setTimeout(() => {
@@ -115,18 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Update HTML attributes
         document.documentElement.lang = lang;
         document.documentElement.dir = LANGUAGES[lang].dir;
 
-        // Update canonical URL
         const canonical = document.querySelector('link[rel="canonical"]');
         if (canonical) {
             const baseUrl = 'https://landing.edgefocus.ru';
             canonical.href = lang === 'en' ? baseUrl : `${baseUrl}?lang=${lang}`;
         }
 
-        // Apply RTL-specific styles for Arabic
         document.body.classList.toggle('rtl', lang === 'ar');
     }
 
@@ -135,11 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateLanguage(currentLang);
 
     // Intersection Observer for scroll animations
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
+    // (.animate-in styles live in styles.css)
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -147,51 +124,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
 
-    // Observe sections and cards for animation
-    const animateElements = document.querySelectorAll(
+    document.querySelectorAll(
         '.problem-card, .feature-card, .market-card, .tech-card, .usecase-card, .vision-item, .section-header'
-    );
-
-    animateElements.forEach(el => {
+    ).forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
 
-    // Add animation class styles
-    const style = document.createElement('style');
-    style.textContent = `
-        .animate-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    `;
-    document.head.appendChild(style);
-
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
             const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
 
-    // Navbar background on scroll
+    // Unified RAF-throttled scroll handler
     const navbar = document.querySelector('.navbar');
-    let lastScroll = 0;
+    const statValues = document.querySelectorAll('.stat-value');
+    const statsSection = document.querySelector('.hero-stats');
+    let statsAnimated = false;
+    let scrollTicking = false;
 
-    window.addEventListener('scroll', () => {
+    function onScroll() {
         const currentScroll = window.pageYOffset;
 
+        // Navbar
         if (currentScroll > 100) {
             navbar.style.background = 'rgba(11, 15, 26, 0.95)';
             navbar.style.borderBottom = '1px solid rgba(102, 126, 234, 0.2)';
@@ -200,52 +163,47 @@ document.addEventListener('DOMContentLoaded', () => {
             navbar.style.borderBottom = '1px solid rgba(255, 255, 255, 0.08)';
         }
 
-        lastScroll = currentScroll;
-    });
-
-    // Parallax effect for gradient orbs
-    window.addEventListener('mousemove', (e) => {
-        const orbs = document.querySelectorAll('.gradient-orb');
-        const x = e.clientX / window.innerWidth;
-        const y = e.clientY / window.innerHeight;
-
-        orbs.forEach((orb, index) => {
-            const speed = (index + 1) * 20;
-            const xOffset = (x - 0.5) * speed;
-            const yOffset = (y - 0.5) * speed;
-            orb.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
-        });
-    });
-
-    // Stats counter animation
-    const statValues = document.querySelectorAll('.stat-value');
-    let statsAnimated = false;
-
-    const animateStats = () => {
-        if (statsAnimated) return;
-
-        const statsSection = document.querySelector('.hero-stats');
-        if (!statsSection) return;
-        const rect = statsSection.getBoundingClientRect();
-
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-            statsAnimated = true;
-            statValues.forEach(stat => {
-                stat.style.animation = 'fadeInUp 0.6s ease forwards';
-            });
+        // Stats animation (runs once)
+        if (!statsAnimated && statsSection) {
+            const rect = statsSection.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                statsAnimated = true;
+                statValues.forEach(stat => {
+                    stat.style.animation = 'fadeInUp 0.6s ease forwards';
+                });
+            }
         }
-    };
 
-    window.addEventListener('scroll', animateStats);
-    animateStats(); // Check on load
+        scrollTicking = false;
+    }
 
-    // Add loading transition
-    document.body.style.opacity = '0';
-    document.body.style.transition = 'opacity 0.5s ease';
+    window.addEventListener('scroll', () => {
+        if (!scrollTicking) {
+            requestAnimationFrame(onScroll);
+            scrollTicking = true;
+        }
+    }, { passive: true });
 
-    window.addEventListener('load', () => {
-        document.body.style.opacity = '1';
-    });
+    onScroll(); // Run once on load
+
+    // RAF-throttled mousemove parallax for gradient orbs
+    const orbs = document.querySelectorAll('.gradient-orb');
+    let mouseTicking = false;
+
+    window.addEventListener('mousemove', (e) => {
+        if (!mouseTicking) {
+            requestAnimationFrame(() => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                orbs.forEach((orb, index) => {
+                    const speed = (index + 1) * 20;
+                    orb.style.transform = `translate(${(x - 0.5) * speed}px, ${(y - 0.5) * speed}px)`;
+                });
+                mouseTicking = false;
+            });
+            mouseTicking = true;
+        }
+    }, { passive: true });
 
     // Console easter egg
     console.log('%c⚡ EdgeFocus', 'font-size: 24px; font-weight: bold; background: linear-gradient(135deg, #667eea, #764ba2, #ed64a6); -webkit-background-clip: text; color: transparent;');
