@@ -954,7 +954,7 @@ body {
 
 .result-label {
     font-size: 13px;
-    color: var(--text-dim);
+    color: var(--text-muted);
 }
 
 /* === TECH SECTION === */
