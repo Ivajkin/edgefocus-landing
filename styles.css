@@ -1292,6 +1292,12 @@ body {
         text-align: center;
     }
 
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
+    }
+
     .vision-item {
         flex-direction: column;
         text-align: center;
