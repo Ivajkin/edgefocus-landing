@@ -1223,16 +1223,17 @@ body {
     }
 
     .hero {
-        padding: 80px 0 40px;
+        /* Navbar is ~68px (20px padding x2 + 28px content).
+           Use 90px to guarantee clearance + breathing room */
+        padding: 90px 0 40px;
         min-height: auto;
+        align-items: flex-start; /* Don't vertically center — flow from top */
     }
 
     .hero-title {
         font-size: clamp(32px, 7vw, 48px);
         margin-bottom: 16px;
-        word-break: break-word;
         overflow-wrap: break-word;
-        hyphens: auto;
     }
 
     .hero-subtitle {
@@ -1243,6 +1244,7 @@ body {
     .hero-badge {
         margin-bottom: 20px;
         padding: 8px 16px;
+        max-width: 100%;
     }
 
     .badge-text {
@@ -1310,17 +1312,17 @@ body {
 
 @media (max-width: 480px) {
     .hero {
-        padding: 70px 0 30px;
+        padding: 84px 0 24px;
     }
 
     .hero-title {
         font-size: clamp(26px, 6.5vw, 36px);
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
 
     .hero-subtitle {
         font-size: 14px;
-        margin-bottom: 16px;
+        margin-bottom: 14px;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
@@ -1328,7 +1330,12 @@ body {
     }
 
     .hero-badge {
-        margin-bottom: 12px;
+        margin-bottom: 10px;
+        padding: 6px 12px;
+    }
+
+    .badge-text {
+        font-size: 11px;
     }
 
     .hero-stats {
