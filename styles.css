@@ -1203,16 +1203,78 @@ body {
 
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
+    .gradient-orb {
+        opacity: 0.2;
+    }
+
+    .orb-1 {
+        width: 300px;
+        height: 300px;
+    }
+
+    .orb-2 {
+        width: 250px;
+        height: 250px;
+    }
+
+    .orb-3 {
+        width: 200px;
+        height: 200px;
+    }
+
     .hero {
-        padding-top: 100px;
+        padding: 80px 0 40px;
+        min-height: auto;
+    }
+
+    .hero-title {
+        font-size: clamp(32px, 7vw, 48px);
+        margin-bottom: 16px;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+    }
+
+    .hero-subtitle {
+        font-size: 16px;
+        margin-bottom: 24px;
+    }
+
+    .hero-badge {
+        margin-bottom: 20px;
+        padding: 8px 16px;
+    }
+
+    .badge-text {
+        font-size: 12px;
     }
 
     .hero-stats {
-        gap: 20px;
+        gap: 16px;
+        margin-bottom: 28px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+
+    .stat-label {
+        font-size: 11px;
     }
 
     .stat-divider {
         display: none;
+    }
+
+    .hero-cta {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .hero-cta .btn {
+        justify-content: center;
+        padding: 14px 24px;
     }
 
     .mock-sidebar {
@@ -1247,6 +1309,45 @@ body {
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: 70px 0 30px;
+    }
+
+    .hero-title {
+        font-size: clamp(26px, 6.5vw, 36px);
+        margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+        margin-bottom: 16px;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .hero-badge {
+        margin-bottom: 12px;
+    }
+
+    .hero-stats {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        gap: 4px;
+        margin-bottom: 20px;
+    }
+
+    .stat-value {
+        font-size: 22px;
+    }
+
+    .stat-label {
+        font-size: 9px;
+        letter-spacing: 0.3px;
+    }
+
     .section {
         padding: 60px 0;
     }
