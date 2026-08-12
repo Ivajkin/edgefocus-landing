@@ -39,11 +39,11 @@ curl -sS -X PUT "${auth[@]}" "$EDGE_BASE/projects/$project_id/views/$view_id/buc
 ```
 List all (with expansions):
 ```bash
-curl -sS "${auth[@]}" "$EDGE_BASE/tasks/all?per_page=50&page=1&expand=subtasks,comments,buckets&sort_by=due_date&order=asc" | jq
+curl -sS "${auth[@]}" "$EDGE_BASE/tasks/all?per_page=50&page=1&expand=subtasks&expand=comments&expand=buckets&sort_by=due_date&order=asc" | jq
 ```
 Get one:
 ```bash
-curl -sS "${auth[@]}" "$EDGE_BASE/tasks/42?expand=subtasks,comments" | jq
+curl -sS "${auth[@]}" "$EDGE_BASE/tasks/42?expand=subtasks&expand=comments" | jq
 ```
 Update (idempotent: send full desired arrays):
 ```bash

@@ -30,7 +30,9 @@ auth=(-H "Authorization: Bearer $EDGE_TOKEN" -H "Accept: application/json" -H "C
 - **List labels**: `curl -sS "${auth[@]}" "$EDGE_BASE/labels?per_page=250" | jq`
 - **Upsert labels**: reuse repo script `tools/upsert-edge-labels.sh` (expects EDGE_TOKEN, optional EDGE_BASE).
 - **Create task in project**: `PUT /projects/{projectID}/tasks` with minimal body `{ "title": "...", "description": "...", "labels": [<labelIDs>], "due_date": "<RFC3339>", "priority": <int>, "bucket_id": <id> }`
-- **List tasks (all)**: `GET /tasks/all?per_page=50&page=1&sort_by=due_date&order=asc&expand=subtasks,comments,buckets`
+- **List tasks (all)**: `GET /tasks/all?per_page=50&page=1&sort_by=due_date&order=asc&expand=subtasks&expand=comments&expand=buckets`
+  - `expand` is repeatable: send one query parameter per value. Never comma-join values.
+  - Supported values: `subtasks`, `buckets`, `reactions`, `comments`. Labels are included normally and are not an `expand` value.
 - **Get/update task**: `GET /tasks/{id}`; `POST /tasks/{id}` with same Task payload to update (including labels array by id). Mark done with `"done": true` or status field; keep unchanged fields present to avoid clearing.
 - **Assign user**: `PUT /tasks/{taskID}/assignees` with body `{ "user_id": <id> }` (repeat for multiples).
 - **Move within board view**: `POST /projects/{project}/views/{view}/buckets/{bucket}/tasks` for creation in a specific bucket; adjust positions via `/tasks/{id}/position`.
