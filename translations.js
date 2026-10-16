@@ -88,14 +88,17 @@ window.EDGEFOCUS_COPY = {
     "footerCompany": "Edge Ecosystem",
     "footerCopy": "© 2026 EdgeFocus. Edge Ecosystem LLC.",
     "languageLabel": "Language",
-    "navLaunch": "EVA & developers",
-    "launchTitle": "Two new ways to use EdgeFocus",
+    "navLaunch": "EVA, integrations and partners",
+    "launchTitle": "Work with EdgeFocus",
     "launchEvaTitle": "Say it to EVA",
     "launchEvaBody": "Talk through a question, hear the reply and continue the conversation. Voice works in supported browsers; your plan’s AI limits apply.",
     "launchEvaAction": "Explore EVA voice",
     "launchDeveloperTitle": "Bring your integration to AgentHub",
     "launchDeveloperBody": "Publish your API, MCP or webhook integration with free or paid terms. Start with up to 3 published listings on Developer Free.",
-    "launchDeveloperAction": "Publish an integration"
+    "launchDeveloperAction": "Publish an integration",
+    "launchPartnerTitle": "Build a practice around EdgeFocus",
+    "launchPartnerBody": "Introduce a qualified opportunity, deliver an implementation or publish an integration. Agree the scope and commercial terms before work begins.",
+    "launchPartnerAction": "Explore the partner program"
   },
   "ru": {
     "skip": "К содержанию",
@@ -185,14 +188,17 @@ window.EDGEFOCUS_COPY = {
     "footerCompany": "Edge Ecosystem",
     "footerCopy": "© 2026 EdgeFocus. ООО «Эдж Экосистема».",
     "languageLabel": "Язык",
-    "navLaunch": "EVA и разработчикам",
-    "launchTitle": "Два новых способа использовать EdgeFocus",
+    "navLaunch": "EVA, интеграции и партнёры",
+    "launchTitle": "Работайте с EdgeFocus",
     "launchEvaTitle": "Скажите это EVA",
     "launchEvaBody": "Обсудите вопрос голосом, послушайте ответ и продолжите разговор. Голос доступен в поддерживаемых браузерах; действуют AI-лимиты тарифа.",
     "launchEvaAction": "Общение голосом с EVA",
     "launchDeveloperTitle": "Ваша интеграция в AgentHub",
     "launchDeveloperBody": "Опубликуйте API-, MCP- или webhook-интеграцию с бесплатными или платными условиями. На Developer Free доступны до 3 опубликованных карточек.",
-    "launchDeveloperAction": "Опубликовать интеграцию"
+    "launchDeveloperAction": "Опубликовать интеграцию",
+    "launchPartnerTitle": "Развивайте практику с EdgeFocus",
+    "launchPartnerBody": "Предложите подходящего клиента, внедрение или интеграцию. Объём работ и коммерческие условия согласуем до начала работы.",
+    "launchPartnerAction": "Партнёрская программа"
   },
   "ar": {
     "skip": "الانتقال إلى المحتوى",
@@ -282,14 +288,17 @@ window.EDGEFOCUS_COPY = {
     "footerCompany": "Edge Ecosystem",
     "footerCopy": "© 2026 EdgeFocus. Edge Ecosystem LLC.",
     "languageLabel": "اللغة",
-    "navLaunch": "EVA والمطورون",
-    "launchTitle": "طريقتان جديدتان لاستخدام EdgeFocus",
+    "navLaunch": "EVA والتكاملات والشركاء",
+    "launchTitle": "اعمل مع EdgeFocus",
     "launchEvaTitle": "تحدث إلى EVA",
     "launchEvaBody": "ناقش سؤالاً بصوتك، واستمع إلى الرد، ثم تابع المحادثة. الصوت متاح في المتصفحات المدعومة ضمن حدود الذكاء الاصطناعي لخطتك.",
     "launchEvaAction": "استكشف صوت EVA — بالإنجليزية",
     "launchDeveloperTitle": "تكاملك في AgentHub",
     "launchDeveloperBody": "انشر تكامل API أو MCP أو webhook مجانياً أو بمقابل. تتيح خطة Developer Free نشر ما يصل إلى 3 تكاملات.",
-    "launchDeveloperAction": "انشر تكاملك — بالإنجليزية"
+    "launchDeveloperAction": "انشر تكاملك — بالإنجليزية",
+    "launchPartnerTitle": "طوّر خدماتك مع EdgeFocus",
+    "launchPartnerBody": "اقترح فرصة مناسبة أو نفّذ حلاً أو انشر تكاملاً. نتفق على نطاق العمل والشروط التجارية قبل البدء.",
+    "launchPartnerAction": "برنامج الشركاء — بالإنجليزية"
   },
   "zh": {
     "skip": "跳转到正文",
@@ -379,13 +388,16 @@ window.EDGEFOCUS_COPY = {
     "footerCompany": "Edge Ecosystem",
     "footerCopy": "© 2026 EdgeFocus. Edge Ecosystem LLC.",
     "languageLabel": "语言",
-    "navLaunch": "EVA 与开发者",
-    "launchTitle": "使用 EdgeFocus 的两种新方式",
+    "navLaunch": "EVA、集成与合作伙伴",
+    "launchTitle": "与 EdgeFocus 合作",
     "launchEvaTitle": "把想法说给 EVA 听",
     "launchEvaBody": "用语音讨论问题，听取回答并继续对话。语音需要浏览器支持，并受套餐 AI 用量限制。",
     "launchEvaAction": "了解 EVA 语音（英文）",
     "launchDeveloperTitle": "在 AgentHub 发布你的集成",
     "launchDeveloperBody": "发布 API、MCP 或 webhook 集成，自行选择免费或付费。Developer Free 最多可发布 3 个集成。",
-    "launchDeveloperAction": "发布集成（英文）"
+    "launchDeveloperAction": "发布集成（英文）",
+    "launchPartnerTitle": "围绕 EdgeFocus 开展服务",
+    "launchPartnerBody": "推荐合适的客户机会、实施解决方案或发布集成。开始工作前，双方书面商定范围和商务条款。",
+    "launchPartnerAction": "合作伙伴计划（英文）"
   }
 };

@@ -3,12 +3,14 @@
     'use strict';
 
     const CAMPAIGN_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid', 'gclid', 'fbclid'];
-    const ACTIONS = ['signup', 'login', 'demo', 'contact', 'plans', 'eva', 'developer'];
+    const ACTIONS = ['signup', 'login', 'demo', 'contact', 'plans', 'eva', 'developer', 'partner', 'partner-apply'];
     const PLACEMENTS = ['nav', 'hero', 'demo', 'pricing', 'footer', 'page', 'team'];
     const LOCALES = ['en', 'ru', 'ar', 'zh'];
     const QA_MARKERS = ['qa', 'audit', 'verify', 'deploy'];
-    const PRODUCTS = ['eva', 'developer'];
+    const INTENTS = ['eva', 'developer'];
+    const PRODUCTS = [...INTENTS, 'partner'];
     const LAUNCH_CAMPAIGN = 'eva-agenthub-launch-202610';
+    const PARTNER_CAMPAIGN = 'edge-partners-202610';
     let initialized = false;
 
     function placement(value) {
@@ -27,7 +29,7 @@
         const selectedProduct = PRODUCTS.includes(product) ? product : pageProduct;
         if (PRODUCTS.includes(selectedProduct)) {
             properties.product = selectedProduct;
-            properties.release = LAUNCH_CAMPAIGN;
+            properties.release = selectedProduct === 'partner' ? PARTNER_CAMPAIGN : LAUNCH_CAMPAIGN;
         }
 
         // The local queue also makes preview QA inspectable without transmitting data.
@@ -50,7 +52,7 @@
         const incoming = new URLSearchParams(window.location.search);
         document.querySelectorAll('a[href]').forEach(anchor => {
             const action = anchor.dataset.cta;
-            const intent = PRODUCTS.includes(anchor.dataset.intent) ? anchor.dataset.intent : null;
+            const intent = INTENTS.includes(anchor.dataset.intent) ? anchor.dataset.intent : null;
             const productLink = PRODUCTS.includes(anchor.dataset.productLink) ? anchor.dataset.productLink : null;
             let url;
             try {
@@ -62,7 +64,22 @@
             if (productLink && url.origin === window.location.origin) {
                 const language = ['ru', 'en'].includes(anchor.dataset.productLanguage)
                     ? anchor.dataset.productLanguage : document.documentElement.lang === 'ru' ? 'ru' : 'en';
-                url.pathname = '/' + language + '/' + (productLink === 'eva' ? 'eva' : 'developers') + '/';
+                url.pathname = '/' + language + '/' + ({eva:'eva',developer:'developers',partner:'partners'}[productLink]) + '/';
+            }
+
+            if (action === 'partner-apply') {
+                if (url.origin !== 'https://edgeivaikin.com' || url.username || url.password || !['/partners/', '/ru/partners/'].includes(url.pathname)) return;
+                url.search = '';
+                const track = anchor.dataset.partnerTrack;
+                if (['referral', 'delivery', 'technology'].includes(track)) url.searchParams.set('track', track);
+                const source = incoming.get('utm_source');
+                url.searchParams.set('utm_source', ['edgefocus', 'edgeivaikin', 'ivaikin', 'telegram', 'linkedin', 'direct'].includes(source) ? source : 'edgefocus');
+                url.searchParams.set('utm_medium', incoming.get('utm_medium') === 'organic_social' ? 'organic_social' : 'website');
+                url.searchParams.set('utm_campaign', PARTNER_CAMPAIGN);
+                url.searchParams.set('utm_content', ['hero','page','footer','apply'].includes(anchor.dataset.location) ? anchor.dataset.location : 'page');
+                if (QA_MARKERS.some(key => incoming.has(key))) url.searchParams.set('qa', '1');
+                anchor.href = url.toString();
+                return;
             }
 
             if (intent || productLink) {
@@ -75,9 +92,11 @@
                 if (intent) url.searchParams.set('intent', intent);
                 const source = incoming.get('utm_source');
                 const medium = incoming.get('utm_medium');
-                url.searchParams.set('utm_source', ['telegram', 'linkedin', 'landing', 'direct'].includes(source) ? source : 'landing');
+                const partnerPage = productLink === 'partner';
+                const sources = partnerPage ? ['edgefocus', 'edgeivaikin', 'ivaikin', 'telegram', 'linkedin', 'direct'] : ['telegram', 'linkedin', 'landing', 'direct'];
+                url.searchParams.set('utm_source', sources.includes(source) ? source : (partnerPage ? 'edgefocus' : 'landing'));
                 url.searchParams.set('utm_medium', medium === 'organic_social' ? 'organic_social' : 'website');
-                url.searchParams.set('utm_campaign', LAUNCH_CAMPAIGN);
+                url.searchParams.set('utm_campaign', productLink === 'partner' ? PARTNER_CAMPAIGN : LAUNCH_CAMPAIGN);
                 url.searchParams.set('utm_content', placement(anchor.dataset.location));
                 if (QA_MARKERS.some(key => incoming.has(key))) url.searchParams.set('qa', '1');
                 anchor.href = url.toString();

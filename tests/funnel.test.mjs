@@ -271,3 +271,42 @@ test('launch events use only fixed product metadata and QA stays suppressed afte
     assert.equal(page.window.dataLayer[1].product, 'eva');
     assert.ok(!JSON.stringify(page.window.dataLayer).includes('example.com'));
 });
+
+test('partner application links keep an explicit track and safe campaign across sites', () => {
+    const link = anchor('https://edgeivaikin.com/ru/partners/?track=delivery&email=private#apply', 'partner-apply');
+    link.dataset.partnerTrack = 'delivery';
+    const page = browser({anchors:[link], product:'partner', search:'?utm_source=telegram&utm_medium=organic_social&qa=1&email=private&redirect=evil'});
+    const url = new URL(link.href);
+    assert.equal(url.origin, 'https://edgeivaikin.com');
+    assert.equal(url.pathname, '/ru/partners/');
+    assert.equal(url.hash, '#apply');
+    assert.deepEqual(Object.fromEntries(url.searchParams), {track:'delivery',utm_source:'telegram',utm_medium:'organic_social',utm_campaign:'edge-partners-202610',utm_content:'hero',qa:'1'});
+    page.fire('click',{target:link});
+    assert.equal(page.posthogEvents.length,0);
+    assert.equal(page.window.dataLayer[1].action,'partner-apply');
+    assert.equal(page.window.dataLayer[1].release,'edge-partners-202610');
+});
+
+test('partner discovery respects locale and cannot become an unsupported signup intent', () => {
+    const link = anchor('https://landing.edgefocus.ru/en/partners/', 'partner');
+    link.dataset.productLink='partner';
+    const signup=anchor('https://edgefocus.ru/register?intent=partner','signup');
+    signup.dataset.intent='partner';
+    const page=browser({anchors:[link,signup],locale:'ru'});
+    assert.equal(new URL(link.href).pathname,'/ru/partners/');
+    assert.equal(new URL(link.href).searchParams.get('utm_campaign'),'edge-partners-202610');
+    assert.equal(new URL(signup.href).searchParams.has('intent'),false);
+    page.document.documentElement.lang='ar';page.fire('edgefocus:locale');
+    assert.equal(new URL(link.href).pathname,'/en/partners/');
+});
+
+test('partner attribution never rewrites an untrusted destination or sends arbitrary metadata', () => {
+    const originals=['https://edgeivaikin.com.evil.test/partners/','https://user@edgeivaikin.com/partners/','http://edgeivaikin.com/partners/','https://edgeivaikin.com/unrelated/'];
+    const links=originals.map(u=>anchor(u,'partner-apply'));
+    browser({anchors:links,search:'?email=private&qa=1'});
+    assert.deepEqual(links.map(a=>a.href),originals);
+    const valid=anchor('https://edgeivaikin.com/partners/#apply','partner-apply');
+    valid.dataset.partnerTrack='secret';
+    browser({anchors:[valid],search:'?utm_source=person@example.com&utm_campaign=private'});
+    assert.deepEqual(Object.fromEntries(new URL(valid.href).searchParams), {utm_source:'edgefocus',utm_medium:'website',utm_campaign:'edge-partners-202610',utm_content:'hero'});
+});
