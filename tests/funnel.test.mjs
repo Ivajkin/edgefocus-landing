@@ -15,7 +15,7 @@ function anchor(href, cta = '', placement = 'hero') {
     };
 }
 
-function browser({hostname = 'landing.edgefocus.ru', search = '', anchors = [], readyState = 'complete', locale = 'ru'} = {}) {
+function browser({hostname = 'landing.edgefocus.ru', search = '', anchors = [], readyState = 'complete', locale = 'ru', product = ''} = {}) {
     const listeners = new Map();
     const posthogEvents = [];
     const metrikaEvents = [];
@@ -23,7 +23,7 @@ function browser({hostname = 'landing.edgefocus.ru', search = '', anchors = [], 
     const pricing = {id: 'pricing'};
     const document = {
         readyState,
-        documentElement: {lang: locale},
+        documentElement: {lang: locale, dataset: {product}},
         querySelectorAll(selector) { return selector === 'a[href]' ? anchors : []; },
         querySelector(selector) { return selector === '#pricing' ? pricing : null; },
         addEventListener(name, handler) {
@@ -32,7 +32,7 @@ function browser({hostname = 'landing.edgefocus.ru', search = '', anchors = [], 
     };
     const window = {
         document,
-        location: {hostname, search, href: `https://${hostname}/${search}`},
+        location: {hostname, search, origin: `https://${hostname}`, href: `https://${hostname}/${search}`},
         posthog: {capture: (...args) => posthogEvents.push(args)},
         ym: (...args) => metrikaEvents.push(args),
         IntersectionObserver: class {
@@ -230,4 +230,44 @@ test('ordinary production campaigns still transmit when a marker appears only in
     const page = browser({search: '?utm_campaign=deploy&source=qa&audit_note=mobile'});
     assert.equal(page.posthogEvents.length, 1);
     assert.equal(page.metrikaEvents.length, 1);
+});
+
+test('product signup and login retain their fixed intent and reject unrelated query values', () => {
+    const signup = anchor('https://edgefocus.ru/register?intent=developer', 'signup');
+    signup.dataset.intent = 'developer';
+    const login = anchor('https://edgefocus.ru/login?intent=eva', 'login');
+    login.dataset.intent = 'eva';
+    browser({anchors: [signup, login], search: '?utm_source=telegram&utm_medium=organic_social&utm_campaign=eva-agenthub-launch-202610&email=private&redirect=https://evil.test&gclid=secret'});
+    for (const [link, path, intent] of [[signup, '/register', 'developer'], [login, '/login', 'eva']]) {
+        const url = new URL(link.href);
+        assert.equal(url.pathname, path);
+        assert.deepEqual(Object.fromEntries(url.searchParams), {intent, utm_source: 'telegram', utm_medium: 'organic_social', utm_campaign: 'eva-agenthub-launch-202610', utm_content: 'hero'});
+    }
+});
+
+test('launch discovery links retain locale and known source across the homepage handoff', () => {
+    const link = anchor('https://landing.edgefocus.ru/en/developers/', 'developer');
+    link.dataset.productLink = 'developer';
+    const page = browser({anchors: [link], search: '?utm_source=linkedin&utm_medium=organic_social'});
+    assert.equal(new URL(link.href).pathname, '/ru/developers/');
+    assert.equal(new URL(link.href).searchParams.get('utm_source'), 'linkedin');
+    page.document.documentElement.lang = 'zh';
+    page.fire('edgefocus:locale');
+    assert.equal(new URL(link.href).pathname, '/en/developers/');
+    link.dataset.productLanguage = 'ru';
+    page.fire('edgefocus:locale');
+    assert.equal(new URL(link.href).pathname, '/ru/developers/');
+});
+
+test('launch events use only fixed product metadata and QA stays suppressed after the app handoff', () => {
+    const link = anchor('https://edgefocus.ru/register', 'signup');
+    link.dataset.intent = 'eva';
+    const page = browser({anchors: [link], product: 'eva', search: '?qa=0&utm_source=person%40example.com'});
+    page.fire('click', {target: link});
+    assert.equal(page.posthogEvents.length, 0);
+    assert.equal(new URL(link.href).searchParams.get('qa'), '1');
+    assert.equal(new URL(link.href).searchParams.get('utm_source'), 'landing');
+    assert.equal(page.window.dataLayer[0].product, 'eva');
+    assert.equal(page.window.dataLayer[1].product, 'eva');
+    assert.ok(!JSON.stringify(page.window.dataLayer).includes('example.com'));
 });

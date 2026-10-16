@@ -16,6 +16,6 @@
         posthog.init('phc_yamNjvPL6xs99uxuSIki6h463eiqlewsNoV5IeTRwAT',{api_host:'https://eu.i.posthog.com',person_profiles:'identified_only',capture_pageview:true,capture_pageleave:true,persistence:'localStorage'});
     
  const collector = document.createElement('script');
- collector.src = 'error-collector.js';
+ collector.src = '/error-collector.js';
  document.head.appendChild(collector);
 })();

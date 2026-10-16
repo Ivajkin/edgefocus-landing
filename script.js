@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const canonical = 'https://landing.edgefocus.ru/' + (language === 'en' ? '' : '?lang=' + language);
     document.querySelector('link[rel="canonical"]').href = canonical;
     document.querySelector('meta[property="og:url"]').content = canonical;
+    document.dispatchEvent(new CustomEvent('edgefocus:locale'));
   }
 
   select.addEventListener('change', () => {

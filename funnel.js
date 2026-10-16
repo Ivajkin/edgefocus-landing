@@ -3,17 +3,19 @@
     'use strict';
 
     const CAMPAIGN_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'yclid', 'gclid', 'fbclid'];
-    const ACTIONS = ['signup', 'login', 'demo', 'contact', 'plans'];
+    const ACTIONS = ['signup', 'login', 'demo', 'contact', 'plans', 'eva', 'developer'];
     const PLACEMENTS = ['nav', 'hero', 'demo', 'pricing', 'footer', 'page', 'team'];
     const LOCALES = ['en', 'ru', 'ar', 'zh'];
     const QA_MARKERS = ['qa', 'audit', 'verify', 'deploy'];
+    const PRODUCTS = ['eva', 'developer'];
+    const LAUNCH_CAMPAIGN = 'eva-agenthub-launch-202610';
     let initialized = false;
 
     function placement(value) {
         return PLACEMENTS.includes(value) ? value : 'unknown';
     }
 
-    function track(name, location, action) {
+    function track(name, location, action, product) {
         const language = String(document.documentElement.lang || '').split('-')[0].toLowerCase();
         const properties = {
             page_version: '2026-10-conversion',
@@ -21,6 +23,12 @@
             locale: LOCALES.includes(language) ? language : 'en',
             action,
         };
+        const pageProduct = document.documentElement.dataset?.product;
+        const selectedProduct = PRODUCTS.includes(product) ? product : pageProduct;
+        if (PRODUCTS.includes(selectedProduct)) {
+            properties.product = selectedProduct;
+            properties.release = LAUNCH_CAMPAIGN;
+        }
 
         // The local queue also makes preview QA inspectable without transmitting data.
         try {
@@ -42,12 +50,39 @@
         const incoming = new URLSearchParams(window.location.search);
         document.querySelectorAll('a[href]').forEach(anchor => {
             const action = anchor.dataset.cta;
+            const intent = PRODUCTS.includes(anchor.dataset.intent) ? anchor.dataset.intent : null;
+            const productLink = PRODUCTS.includes(anchor.dataset.productLink) ? anchor.dataset.productLink : null;
             let url;
             try {
                 const destination = action === 'signup' ? 'https://edgefocus.ru/register'
                     : action === 'login' ? 'https://edgefocus.ru/login' : anchor.href;
                 url = new URL(destination, window.location.href);
             } catch (_) { return; }
+
+            if (productLink && url.origin === window.location.origin) {
+                const language = ['ru', 'en'].includes(anchor.dataset.productLanguage)
+                    ? anchor.dataset.productLanguage : document.documentElement.lang === 'ru' ? 'ru' : 'en';
+                url.pathname = '/' + language + '/' + (productLink === 'eva' ? 'eva' : 'developers') + '/';
+            }
+
+            if (intent || productLink) {
+                if (url.username || url.password) return;
+                if (intent && url.origin !== 'https://edgefocus.ru') return;
+                if (productLink && url.origin !== window.location.origin) return;
+                // Product launch links carry only declared campaign values. Never
+                // propagate arbitrary identifiers, redirect URLs or query text.
+                url.search = '';
+                if (intent) url.searchParams.set('intent', intent);
+                const source = incoming.get('utm_source');
+                const medium = incoming.get('utm_medium');
+                url.searchParams.set('utm_source', ['telegram', 'linkedin', 'landing', 'direct'].includes(source) ? source : 'landing');
+                url.searchParams.set('utm_medium', medium === 'organic_social' ? 'organic_social' : 'website');
+                url.searchParams.set('utm_campaign', LAUNCH_CAMPAIGN);
+                url.searchParams.set('utm_content', placement(anchor.dataset.location));
+                if (QA_MARKERS.some(key => incoming.has(key))) url.searchParams.set('qa', '1');
+                anchor.href = url.toString();
+                return;
+            }
 
             // Exact origin, with no embedded credentials. Never forward to a lookalike.
             if (url.origin !== 'https://edgefocus.ru' || url.username || url.password) return;
@@ -78,8 +113,10 @@
         document.addEventListener('click', event => {
             const anchor = event.target?.closest?.('a[data-cta]');
             const action = anchor?.dataset.cta;
-            if (ACTIONS.includes(action)) track('cta_click', anchor.dataset.location, action);
+            if (ACTIONS.includes(action)) track('cta_click', anchor.dataset.location, action, anchor.dataset.intent || anchor.dataset.productLink);
         });
+
+        document.addEventListener('edgefocus:locale', updateAppLinks);
 
         // The illustration dispatches this after changing state; ignore arbitrary detail.
         document.addEventListener('edgefocus:demo', () => track('demo_interaction', 'demo', 'toggle'));
