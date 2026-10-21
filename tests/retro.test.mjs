@@ -131,6 +131,14 @@ test('retro discovery is additive on the existing homepage and sitemap', () => {
   const homepage = readFileSync(fileFor('/index.html'), 'utf8');
   const footer = homepage.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/i)?.[0];
   assert.ok(footer, 'homepage footer remains present');
+  const hero = homepage.match(/<section\b[^>]*class="hero"[^>]*>[\s\S]*?<\/section>/i)?.[0];
+  assert.ok(hero, 'homepage hero remains present');
+  assert.ok(tags(hero, 'a').some(link => new URL(link.href, origin).pathname === '/retro/' && link['data-i18n'] === 'heroRetro'),
+    'retro edition is discoverable in the hero on narrow and wide layouts');
+  const discovery = tags(hero, 'a').find(link => link['data-i18n'] === 'heroRetro');
+  const campaign = new URL(discovery.href, origin).searchParams;
+  assert.equal(campaign.get('utm_source'), 'edgefocus');
+  assert.equal(campaign.get('utm_campaign'), 'edgefocus-retro-202610');
   assert.ok(tags(footer, 'a').some(link => new URL(link.href, origin).pathname === '/retro/'));
   assert.equal(tags(homepage, 'link').find(link => link.rel === 'canonical')?.href, origin + '/');
   const sitemap = readFileSync(fileFor('/sitemap.xml'), 'utf8');

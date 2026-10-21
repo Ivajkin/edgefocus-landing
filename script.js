@@ -29,6 +29,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-i18n-content]').forEach(element => {
       element.setAttribute('content', copy[language][element.dataset.i18nContent]);
     });
+    document.querySelectorAll('[data-retro-discovery]').forEach(link => {
+      const retro = new URL(language === 'ru' ? '/retro/ru/' : '/retro/', 'https://landing.edgefocus.ru');
+      retro.searchParams.set('utm_source', 'edgefocus');
+      retro.searchParams.set('utm_medium', 'website');
+      retro.searchParams.set('utm_campaign', 'edgefocus-retro-202610');
+      if ([...params.keys()].some(key => ['qa', 'audit', 'verify', 'deploy'].includes(key.toLowerCase()))) retro.searchParams.set('qa', '1');
+      link.href = retro.href;
+    });
     const canonical = 'https://landing.edgefocus.ru/' + (language === 'en' ? '' : '?lang=' + language);
     document.querySelector('link[rel="canonical"]').href = canonical;
     document.querySelector('meta[property="og:url"]').content = canonical;

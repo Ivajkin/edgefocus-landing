@@ -20,3 +20,5 @@ html[lang=ar] h1,html[lang=ar] h2,html[lang=ar] h3{letter-spacing:0;line-height:
 .launch-paths{background:var(--surface);border-bottom:1px solid var(--line)}.launch-paths> .container>h2{max-width:25ch;margin-bottom:42px}.launch-paths-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px}.launch-paths-grid article{border-top:2px solid var(--blue);padding-top:26px;display:flex;flex-direction:column;align-items:flex-start}.launch-paths-grid h3{font-size:28px;max-width:24ch}.launch-paths-grid p{max-width:52ch;color:var(--muted);margin:18px 0 26px}.launch-paths-grid .button{margin-top:auto}@media(max-width:760px){.launch-paths-grid{grid-template-columns:1fr;gap:36px}.launch-paths-grid h3{font-size:25px}}
 
 .launch-paths-grid .launch-partner{grid-column:1/-1}.launch-partner p{max-width:72ch}
+
+.retro-discovery{display:inline-flex;align-items:center;min-height:44px;margin-top:8px;font-size:13px;color:var(--blue);text-decoration:underline;text-underline-offset:4px}
