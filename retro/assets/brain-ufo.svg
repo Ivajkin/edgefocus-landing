@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 340" role="img" aria-labelledby="ufo-title ufo-desc" shape-rendering="crispEdges">
+  <title id="ufo-title">Your brain called. Its flying saucer is here.</title>
+  <desc id="ufo-desc">A smiling green alien pilots a chrome flying saucer, beaming up a yellow folder and a shower of colorful floppy disks and paper notes.</desc>
+  <defs>
+    <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d6ff00" stop-opacity=".8"/>
+      <stop offset=".5" stop-color="#eaff00" stop-opacity=".23"/>
+      <stop offset="1" stop-color="#9eff00" stop-opacity=".05"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#00faff" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#007aff" stop-opacity=".5"/>
+    </linearGradient>
+  </defs>
+  <!-- The rescue beam is all ray-gun green, with no opaque background. -->
+  <path d="M165 143H255L371 332H49Z" fill="url(#beam)"/>
+  <path d="M174 156L80 319M245 156L339 319" fill="none" stroke="#dbff00" stroke-width="3" opacity=".65"/>
+  <path d="M190 167L152 302M229 167L265 302" fill="none" stroke="#faff7a" stroke-width="2" stroke-dasharray="7 13" opacity=".6"/>
+
+  <!-- A proper chunky 1997 space helmet. -->
+  <path d="M123 111V69H133V49H147V35H167V25H252V35H272V49H286V69H296V111Z" fill="#080020"/>
+  <path d="M131 110V71H141V53H153V43H171V33H248V43H266V53H278V71H288V110Z" fill="url(#glass)"/>
+  <path d="M141 87V71H151V57H164V48H185V43H203" fill="none" stroke="#a3ffff" stroke-width="5"/>
+  <path d="M145 90V101" stroke="#fff" stroke-width="5"/>
+  <path d="M263 62H273V82H278V102H268V80H263Z" fill="#0088fa"/>
+
+  <!-- Pilot: curious, optimistic, a little overqualified. -->
+  <path d="M203 57V43H211V33H219V47H211V57Z" fill="#080020"/>
+  <path d="M209 30H223V44H209Z" fill="#ff27d6" stroke="#080020" stroke-width="4"/>
+  <path d="M177 108V92H169V69H177V57H190V51H231V57H245V69H253V92H245V108Z" fill="#06091d"/>
+  <path d="M181 104V89H177V71H185V63H194V59H227V63H237V71H245V89H237V104Z" fill="#95ff00"/>
+  <path d="M185 68H195V64H224V68H234V73H222V69H196V73H185Z" fill="#d6ff69"/>
+  <path d="M182 76H193V80H198V89H193V93H186V88H182Z" fill="#0b0924"/>
+  <path d="M239 76H228V80H223V89H228V93H235V88H239Z" fill="#0b0924"/>
+  <path d="M185 78H189V82H185ZM230 80H234V84H230Z" fill="#fff"/>
+  <path d="M200 92V98H206V102H217V98H223V92H219V97H204V92Z" fill="#11112c"/>
+  <path d="M199 111V105H222V111H231V121H190V111Z" fill="#ff37cb" stroke="#09051d" stroke-width="4"/>
+  <path d="M211 108V119" stroke="#fcff1d" stroke-width="4"/>
+
+  <!-- Saucer: shiny stairs, racing stripes, and maximalism. -->
+  <path d="M126 102H294V110H320V118H346V126H368V134H378V150H368V158H345V166H321V174H100V166H76V158H53V150H43V134H53V126H75V118H101V110H126Z" fill="#09051b"/>
+  <path d="M130 110H290V118H316V126H343V134H365V142H56V134H79V126H105V118H130Z" fill="#8d98c2"/>
+  <path d="M138 110H281V118H307V126H323V130H93V126H113V118H138Z" fill="#dce9ff"/>
+  <path d="M150 111H270V117H150ZM114 122H305V126H114Z" fill="#fff"/>
+  <path d="M56 142H365V150H342V158H318V166H103V158H79V150H56Z" fill="#604c9c"/>
+  <path d="M78 147H342V153H318V159H103V153H78Z" fill="#353565"/>
+  <path d="M57 137H366V144H57Z" fill="#ff23c9"/>
+  <path d="M66 137H360V140H66Z" fill="#ffc9ff"/>
+  <path d="M162 157H257V165H246V173H173V165H162Z" fill="#0b0c25"/>
+  <path d="M175 159H244V166H175Z" fill="#efff00"/>
+  <path d="M188 161H231V165H188Z" fill="#fff"/>
+  <g stroke="#100721" stroke-width="4">
+    <path d="M85 144H102V156H85Z" fill="#faff00"/>
+    <path d="M122 149H140V161H122Z" fill="#ff483c"/>
+    <path d="M279 149H297V161H279Z" fill="#ff483c"/>
+    <path d="M317 144H334V156H317Z" fill="#faff00"/>
+  </g>
+  <path d="M89 146H98V149H89ZM126 151H135V154H126ZM283 151H292V154H283ZM321 146H330V149H321Z" fill="#fff"/>
+
+  <!-- Free-floating thought floppies. -->
+  <g transform="translate(86 205) rotate(-18)">
+    <path d="M0 0H45L53 8V55H0Z" fill="#ff37d2" stroke="#08021c" stroke-width="5"/>
+    <path d="M10 1H38V19H10Z" fill="#b7d7ff" stroke="#08021c" stroke-width="3"/>
+    <path d="M27 3H34V16H27Z" fill="#25144c"/>
+    <path d="M9 32H43V53H9Z" fill="#fff9c6" stroke="#08021c" stroke-width="3"/>
+    <path d="M15 38H36M15 45H30" stroke="#ff37d2" stroke-width="3"/>
+  </g>
+  <g transform="translate(288 187) rotate(17)">
+    <path d="M0 0H38L45 8V48H0Z" fill="#00d8ff" stroke="#08021c" stroke-width="5"/>
+    <path d="M8 1H32V17H8Z" fill="#dedfff" stroke="#08021c" stroke-width="3"/>
+    <path d="M23 3H29V14H23Z" fill="#25144c"/>
+    <path d="M7 28H38V46H7Z" fill="#fbff43" stroke="#08021c" stroke-width="3"/>
+    <path d="M12 35H31M12 41H26" stroke="#ff3589" stroke-width="3"/>
+  </g>
+  <g transform="translate(168 187) rotate(12)">
+    <path d="M0 0H31V38H0Z" fill="#ff8b00" stroke="#08021c" stroke-width="4"/>
+    <path d="M6 8H25M6 15H25M6 22H19" stroke="#fff5ad" stroke-width="3"/>
+  </g>
+  <g transform="translate(253 241) rotate(-15)">
+    <path d="M0 0H27L37 10V43H0Z" fill="#fefce6" stroke="#08021c" stroke-width="4"/>
+    <path d="M27 0V10H37" fill="#9c7dff" stroke="#08021c" stroke-width="3"/>
+    <path d="M7 17H28M7 24H28M7 31H20" stroke="#6b21ff" stroke-width="3"/>
+  </g>
+
+  <!-- The last unfiled thought is delighted to be rescued. -->
+  <g transform="translate(140 270) rotate(-3)">
+    <path d="M0 7H10V0H48L61 13H111V67H0Z" fill="#fca900" stroke="#08021c" stroke-width="6"/>
+    <path d="M9 13H100V23H9Z" fill="#fff7ab"/>
+    <path d="M-7 25H116L107 71H1Z" fill="#ffea00" stroke="#08021c" stroke-width="6"/>
+    <path d="M3 29H108V35H3Z" fill="#ffffa3"/>
+    <path d="M30 44H38V55H30ZM72 44H80V55H72Z" fill="#100924"/>
+    <path d="M48 54V59H62V54" fill="none" stroke="#100924" stroke-width="4"/>
+    <path d="M17 55H28V59H17ZM82 55H93V59H82Z" fill="#ff7e34"/>
+  </g>
+
+  <!-- Little bits of cosmic nonsense. -->
+  <g fill="#f8ff00" stroke="#09051b" stroke-width="2">
+    <path d="M58 66H64V78H76V84H64V96H58V84H46V78H58Z"/>
+    <path d="M351 50H357V62H369V68H357V80H351V68H339V62H351Z"/>
+    <path d="M355 253H361V263H371V269H361V279H355V269H345V263H355Z"/>
+    <path d="M55 284H61V294H71V300H61V310H55V300H45V294H55Z"/>
+  </g>
+  <g fill="#ff34da">
+    <path d="M101 39H108V46H101ZM304 29H311V36H304ZM379 188H386V195H379ZM34 214H41V221H34Z"/>
+    <path d="M231 211H237V217H243V223H237V229H231V223H225V217H231Z"/>
+  </g>
+  <g fill="#7bffff">
+    <path d="M26 115H32V121H26ZM389 102H395V108H389ZM128 182H134V188H128ZM317 308H323V314H317Z"/>
+    <path d="M106 280H112V290H122V296H112V306H106V296H96V290H106Z"/>
+  </g>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="globe-title" shape-rendering="crispEdges">
+  <title id="globe-title">The World Wide Weird</title>
+  <defs>
+    <clipPath id="planet-clip">
+      <path d="M31 11H69V17H81V29H87V67H81V79H69V85H31V79H19V67H13V29H19V17H31Z"/>
+    </clipPath>
+  </defs>
+  <path d="M29 7H71V13H83V25H91V71H83V83H71V91H29V83H17V71H9V25H17V13H29Z" fill="#07031e"/>
+  <path d="M31 11H69V17H81V29H87V67H81V79H69V85H31V79H19V67H13V29H19V17H31Z" fill="#1457ff"/>
+  <g clip-path="url(#planet-clip)">
+    <path d="M13 24H27V17H40V23H48V31H40V39H31V47H23V41H13ZM30 47H41V54H47V66H41V77H33V66H27V55H30ZM63 14H75V23H84V30H75V37H66V44H57V35H51V24H63ZM64 44H78V51H87V62H80V72H72V63H63V56H57V49H64Z" fill="#69ff00"/>
+    <path d="M18 26H27V22H37V27H32V34H25V39H18ZM63 20H71V25H65V31H57V26H63ZM68 48H76V53H82V57H72V54H65Z" fill="#d0ff69"/>
+    <path d="M13 34H87M13 51H87M13 68H87M50 11V85M32 11L25 30V66L32 85M68 11L75 30V66L68 85" fill="none" stroke="#00dfff" stroke-width="2" opacity=".66"/>
+    <path d="M68 11V20H77V30H82V65H76V75H65V82H32V86H87V11Z" fill="#100067" opacity=".55"/>
+  </g>
+  <path d="M32 13H66M20 23V32M16 34V49" fill="none" stroke="#b8ffff" stroke-width="3"/>
+  <path d="M8 59H3V70H9V76H24V80H49V76H68V70H83V64H93V58H97V46H91V43" fill="none" stroke="#07031e" stroke-width="9"/>
+  <path d="M8 59H3V70H9V76H24V80H49V76H68V70H83V64H93V58H97V46H91V43" fill="none" stroke="#00ffff" stroke-width="4"/>
+  <path d="M9 73H24V77H48V73H67" fill="none" stroke="#fff" stroke-width="2"/>
+  <path d="M89 8H93V14H99V18H93V24H89V18H83V14H89Z" fill="#ffed00" stroke="#080521" stroke-width="2"/>
+  <path d="M8 87H12V91H8ZM80 90H84V94H80Z" fill="#ff34da"/>
+</svg>
