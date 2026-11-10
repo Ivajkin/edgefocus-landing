@@ -37,6 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if ([...params.keys()].some(key => ['qa', 'audit', 'verify', 'deploy'].includes(key.toLowerCase()))) retro.searchParams.set('qa', '1');
       link.href = retro.href;
     });
+    const portfolioLink = document.querySelector('#portfolio-link');
+    if (portfolioLink) {
+      const prefix = language === 'en' ? '' : language + '/';
+      portfolioLink.href = 'https://edgeivaikin.com/' + prefix + 'cases/';
+    }
     const canonical = 'https://landing.edgefocus.ru/' + (language === 'en' ? '' : '?lang=' + language);
     document.querySelector('link[rel="canonical"]').href = canonical;
     document.querySelector('meta[property="og:url"]').content = canonical;
