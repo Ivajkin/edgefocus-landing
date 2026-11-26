@@ -44,6 +44,26 @@ test('dynamic copy has the same complete key set in every locale', () => {
     }
 });
 
+test('homepage positioning matches the approved English and Russian lines', () => {
+    const copy = loadCopy();
+    assert.equal(copy.en.metaTitle, 'EdgeFocus: AI Agent Execution Platform for Teams');
+    assert.equal(copy.en.heroTitle, 'From intent to measurable outcomes');
+    assert.equal(copy.en.metaDescription, 'Connect AI agents to your tasks, CRM and workflows via MCP. EVA, automation and bottleneck analysis turn intent into measurable outcomes.');
+    assert.equal(copy.en.heroDescription, copy.en.metaDescription);
+    assert.equal(copy.ru.metaTitle, 'EdgeFocus: платформа исполнения для ИИ-агентов и команд');
+    assert.equal(copy.ru.heroTitle, 'От намерения к измеримому результату');
+    assert.equal(copy.ru.metaDescription, 'Подключите ИИ-агентов к задачам, CRM и процессам через MCP. EVA, автоматизация и поиск узкого места превращают намерение в измеримый результат.');
+    assert.equal(copy.ru.heroDescription, copy.ru.metaDescription);
+    for (const key of ['metaTitle', 'metaDescription', 'heroTitle', 'heroDescription', 'ogImageAlt']) {
+        assert.doesNotMatch(copy.ru[key], /[—–]/u, `ru.${key} uses a long dash`);
+    }
+    for (const locale of ['en', 'ru', 'ar', 'zh']) {
+        assert.doesNotMatch(copy[locale].heroTitle, /Falco/);
+        assert.doesNotMatch(copy[locale].heroDescription, /Falco/);
+        assert.doesNotMatch(copy[locale].metaDescription, /Falco/);
+    }
+});
+
 test('Arabic and simplified Chinese content are preserved alongside English and Russian', () => {
     const copy = loadCopy();
     assert.match(copy.ar.heroTitle, /\p{Script=Arabic}/u, 'Arabic copy supports the RTL locale');
